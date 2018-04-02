@@ -55,9 +55,9 @@ namespace QuartzConsole
                     {
                         Id = 1,
                         Destination = "Mr.Keert",
-                        Duration = 1,
+                        Duration = 10,
                         Fleet = 0,
-                        Repeat = 10
+                        Repeat = 3
                     },
                     new AlarmRouteRule()
                     {
@@ -124,8 +124,10 @@ namespace QuartzConsole
                 }
 
                 JobChainHandler jobChainHandler = new JobChainHandler();
+                TriggerChainHandler triggerChainHandler = new TriggerChainHandler();
+                
                 scheduler.ListenerManager.AddJobListener(jobChainHandler, GroupMatcher<JobKey>.AnyGroup());
-
+                scheduler.ListenerManager.AddTriggerListener(triggerChainHandler, GroupMatcher<TriggerKey>.AnyGroup());
                 await scheduler.ScheduleJob(alarmJobInfoList[0].Job,alarmJobInfoList[0].Trigger);
                 
 
@@ -157,7 +159,7 @@ namespace QuartzConsole
                         .WithIdentity("Trigger_route_rule" + rule.Id,group)
                         
                         .WithSimpleSchedule(x=>x
-                            .WithIntervalInMinutes(rule.Duration)
+                            .WithIntervalInSeconds(rule.Duration)
                             .WithRepeatCount(rule.Repeat))
                             .StartAt(DateTime.Now)
                         .ForJob(job)

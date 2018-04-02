@@ -34,9 +34,11 @@ namespace QuartzConsole
                 throw new ArgumentNullException();
             }
 
-            var finishedJob = context.JobDetail;
+            Console.Out.WriteAsync("JobComplete at " + DateTime.Now.ToLongTimeString());
 
-            context.Scheduler.DeleteJob(finishedJob.Key);
+            var finishedJob = context.JobDetail;
+            
+            /*context.Scheduler.DeleteJob(finishedJob.Key);
 
             IJobDetail nextJob = (IJobDetail)finishedJob.JobDataMap.Get("nextJob");
             ITrigger nextTrigger = (ITrigger)finishedJob.JobDataMap.Get("nextTrigger");
@@ -46,7 +48,7 @@ namespace QuartzConsole
                 return Task.CompletedTask;
             }
 
-            context.Scheduler.ScheduleJob(nextJob, nextTrigger);
+            context.Scheduler.ScheduleJob(nextJob, nextTrigger);*/
 
             return Task.CompletedTask;
         }
