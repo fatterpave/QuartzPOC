@@ -63,7 +63,7 @@ namespace QuartzConsole
                     {
                         Id = 2,
                         Destination = "Bergen",
-                        Duration = 10,
+                        Duration = 20,
                         Fleet = 0,
                         Repeat = 1
                     },
@@ -71,7 +71,7 @@ namespace QuartzConsole
                     {
                         Id = 3,
                         Destination = "RS",
-                        Duration = 1,
+                        Duration = 10,
                         Fleet = 15,
                         Repeat = 1
                     }
@@ -127,7 +127,7 @@ namespace QuartzConsole
                 TriggerChainHandler triggerChainHandler = new TriggerChainHandler();
                 
                 scheduler.ListenerManager.AddJobListener(jobChainHandler, GroupMatcher<JobKey>.AnyGroup());
-                scheduler.ListenerManager.AddTriggerListener(triggerChainHandler, GroupMatcher<TriggerKey>.AnyGroup());
+                //scheduler.ListenerManager.AddTriggerListener(triggerChainHandler, GroupMatcher<TriggerKey>.AnyGroup());
                 await scheduler.ScheduleJob(alarmJobInfoList[0].Job,alarmJobInfoList[0].Trigger);
                 
 

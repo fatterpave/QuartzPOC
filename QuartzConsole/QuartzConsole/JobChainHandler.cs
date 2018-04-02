@@ -36,19 +36,24 @@ namespace QuartzConsole
 
             Console.Out.WriteAsync("JobComplete at " + DateTime.Now.ToLongTimeString());
 
+            ISimpleTrigger s = (ISimpleTrigger)context.Trigger;
+
             var finishedJob = context.JobDetail;
-            
-            /*context.Scheduler.DeleteJob(finishedJob.Key);
 
-            IJobDetail nextJob = (IJobDetail)finishedJob.JobDataMap.Get("nextJob");
-            ITrigger nextTrigger = (ITrigger)finishedJob.JobDataMap.Get("nextTrigger");
-
-            if (nextJob == null)
+            if (s.TimesTriggered == s.RepeatCount)
             {
-                return Task.CompletedTask;
+                context.Scheduler.DeleteJob(finishedJob.Key);
+                AlarmRouteRule rule = (AlarmRouteRule)finishedJob.JobDataMap.Get("rule");
+                IJobDetail nextJob = (IJobDetail)finishedJob.JobDataMap.Get("nextJob");
+                ITrigger nextTrigger = (ITrigger)finishedJob.JobDataMap.Get("nextTrigger");
+                
+                if (nextJob == null)
+                {
+                    return Task.CompletedTask;
+                }
+                ITrigger tr = nextTrigger.GetTriggerBuilder().StartAt(DateTime.Now.AddSeconds(rule.Duration)).Build();
+                context.Scheduler.ScheduleJob(nextJob, tr);
             }
-
-            context.Scheduler.ScheduleJob(nextJob, nextTrigger);*/
 
             return Task.CompletedTask;
         }
